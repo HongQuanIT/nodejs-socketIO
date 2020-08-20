@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="D:\Sever_04_SocketIO\assets\jquery.min.js"></script>
+</head>
+<body>
+    <label>Nhap ten :</label>
+    <input type="text" id="name">
+    <button id="ten">Nhap ten</button>
+     
+    <h2 class="name"></h2>
+    <hr>
+    <input type="text" id="input"><br>
+    <button id="submit">Chat</button>
+    <hr>
+    <p class="noidung"></p>
+<script>
+    var socket = io("http://localhost:3000");
+    socket.on("sever-send-data-q", function(id,name,data){
+        $(".noidung").append(`<p>`+id+`(`+name+`) :`+data+`</p>`);
+    });
+    $(document).ready(function () {
+        $("#ten").click(function(){
+            $(".name").html($("#name").val());
+        })
+        $("#submit").click(function(){
+            if ($(".name").html()!='') {
+                name =$(".name").html();
+                data = $("#input").val();
+                socket.emit("client-send-data-q",name, data);
+            }
+            else{
+                alert("Ban chua nhap ten !!!!. Nhap vao de chat nhe babe");
+            }
+        })
+    });
+</script>
+</body>
+</html>
